@@ -1,4 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.27;
 
-contract Green_SubDAO {}
+contract Green_SubDAO {
+    string public subDAOName;
+
+    constructor(string memory name) {
+        subDAOName = name;
+    }
+}

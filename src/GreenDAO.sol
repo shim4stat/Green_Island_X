@@ -22,7 +22,7 @@ import {IVotes} from "@openzeppelin/contracts/governance/utils/IVotes.sol";
 import {
     TimelockController
 } from "@openzeppelin/contracts/governance/TimelockController.sol";
-import "{Green_SubDAO} from "./SubDAO.sol";
+import {Green_SubDAO} from "./SubDAO.sol";
 
 contract GreenDAO is
     Governor,
