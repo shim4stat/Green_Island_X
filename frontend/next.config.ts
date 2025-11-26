@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         hostname: "ipfs.io",
         pathname: "/ipfs/**",
       },
+      // 任意の外部画像を許可（開発時のみ推奨）
+      {
+        protocol: "https",
+        hostname: "**",
+      },
     ],
   },
 };
