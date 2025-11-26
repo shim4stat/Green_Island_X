@@ -29,10 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${inter.className} bg-gray-50 antialiased`}>
+      <body className={`${inter.className} bg-white antialiased`}>
         <Header />
-        <main className="min-h-screen">{children}</main>
-        <footer className="border-t border-gray-200 bg-white py-8 text-center text-sm text-gray-500">
+        <main className="min-h-screen bg-gradient-to-b from-green-50/50 to-white">
+          {children}
+        </main>
+        <footer className="border-t border-gray-200 bg-white py-8 text-center text-sm text-gray-600">
           <p>© 2025 EcoDAO. Built for a sustainable future 🌍</p>
         </footer>
       </body>

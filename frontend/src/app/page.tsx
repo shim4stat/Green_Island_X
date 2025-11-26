@@ -28,7 +28,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <div className="mb-12 text-center">
         <h1 className="mb-4 text-4xl font-bold text-gray-900">🌿 EcoDAO</h1>
-        <p className="mx-auto max-w-2xl text-lg text-gray-600">
+        <p className="mx-auto max-w-2xl text-lg text-gray-700">
           個人のCO₂削減活動をブロックチェーン上で可視化・資産化。
           <br />
           みんなの小さな努力が、大きな環境貢献へ。
@@ -76,8 +76,8 @@ export default function HomePage() {
               onClick={() => setFilter(f)}
               className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                 filter === f
-                  ? "bg-green-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-100"
+                  ? "bg-green-600 text-white shadow-md"
+                  : "bg-white text-gray-800 border border-gray-200 hover:bg-gray-50"
               }`}
             >
               {f === "all" && "すべて"}

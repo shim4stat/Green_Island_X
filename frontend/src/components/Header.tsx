@@ -28,13 +28,13 @@ export function Header() {
         <nav className="hidden items-center gap-6 md:flex">
           <Link
             href="/"
-            className="text-gray-600 transition-colors hover:text-green-600"
+            className="text-gray-800 font-medium transition-colors hover:text-green-600"
           >
             ダッシュボード
           </Link>
           <Link
             href="/create"
-            className="text-gray-600 transition-colors hover:text-green-600"
+            className="text-gray-800 font-medium transition-colors hover:text-green-600"
           >
             DAO を作成
           </Link>

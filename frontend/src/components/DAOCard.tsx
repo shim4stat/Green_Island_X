@@ -61,7 +61,7 @@ export function DAOCard({ dao }: DAOCardProps) {
           <h3 className="mb-2 truncate text-lg font-semibold text-gray-900 group-hover:text-green-600">
             {dao.title}
           </h3>
-          <p className="mb-4 line-clamp-2 text-sm text-gray-600">
+          <p className="mb-4 line-clamp-2 text-sm text-gray-700">
             {dao.description}
           </p>
 
