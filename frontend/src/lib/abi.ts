@@ -53,6 +53,7 @@ export const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "";
  */
 export const SUPPORTED_CHAIN_IDS = {
   SEPOLIA: 11155111,
+  POLYGON_AMOY: 80002,
   LOCALHOST: 31337,
 } as const;
 
@@ -75,6 +76,16 @@ export const CHAIN_INFO = {
     currency: {
       name: "Sepolia ETH",
       symbol: "ETH",
+      decimals: 18,
+    },
+  },
+  [SUPPORTED_CHAIN_IDS.POLYGON_AMOY]: {
+    name: "Polygon Amoy Testnet",
+    rpcUrl: "https://rpc-amoy.polygon.technology",
+    blockExplorer: "https://amoy.polygonscan.com",
+    currency: {
+      name: "MATIC",
+      symbol: "MATIC",
       decimals: 18,
     },
   },
