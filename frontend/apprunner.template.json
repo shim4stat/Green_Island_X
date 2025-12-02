@@ -1,0 +1,31 @@
+{
+  "ServiceName": "ecodao-frontend-v3",
+  "SourceConfiguration": {
+    "ImageRepository": {
+      "ImageIdentifier": "<AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-1.amazonaws.com/ecodao-frontend:latest",
+      "ImageConfiguration": {
+        "Port": "3000",
+        "RuntimeEnvironmentVariables": {
+          "HOSTNAME": "0.0.0.0",
+          "PORT": "3000"
+        }
+      },
+      "ImageRepositoryType": "ECR"
+    },
+    "AutoDeploymentsEnabled": true,
+    "AuthenticationConfiguration": {
+      "AccessRoleArn": "arn:aws:iam::<AWS_ACCOUNT_ID>:role/service-role/AppRunnerECRAccessRole"
+    }
+  },
+  "HealthCheckConfiguration": {
+    "Protocol": "TCP",
+    "Interval": 10,
+    "Timeout": 5,
+    "HealthyThreshold": 1,
+    "UnhealthyThreshold": 5
+  },
+  "InstanceConfiguration": {
+    "Cpu": "1024",
+    "Memory": "2048"
+  }
+}

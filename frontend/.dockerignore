@@ -1,0 +1,36 @@
+# 依存関係
+node_modules
+npm-debug.log*
+
+# ビルド成果物
+.next
+out
+
+# 環境変数（機密情報）
+.env
+.env.local
+.env*.local
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# テスト
+coverage
+
+# コントラクト（フロントエンドのDockerイメージには不要）
+contract-example
+
+# ドキュメント
+*.md
+!README.md

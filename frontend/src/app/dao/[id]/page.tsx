@@ -48,7 +48,7 @@ export default function DAODetailPage() {
     if (!dao) return;
 
     const confirmed = window.confirm(
-      "この DAO を細胞分裂させますか？\n新しい DAO が同じ目標で作成されます。"
+      "この DAO を分裂させますか？\n新しい DAO が同じ目標で作成されます。"
     );
 
     if (confirmed) {
@@ -190,7 +190,7 @@ export default function DAODetailPage() {
                       処理中...
                     </>
                   ) : (
-                    <>🧬 細胞分裂させる</>
+                    <>DAOを分裂させる</>
                   )}
                 </button>
               )}

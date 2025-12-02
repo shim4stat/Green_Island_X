@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Docker用: standaloneモードで出力
+  output: "standalone",
+
   images: {
     remotePatterns: [
       {

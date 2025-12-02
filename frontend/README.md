@@ -233,6 +233,131 @@ Anvil 起動時に表示される秘密鍵を MetaMask にインポートして�
 - **進捗表示**: 目標達成率をプログレスバーで可視化
 - **NFT 進化**: 目標達成で NFT 画像が変化
 
+---
+
+## ☁️ AWS App Runner へのデプロイ
+
+Docker を使って AWS App Runner にデプロイする手順です。
+
+### 前提条件
+
+- AWS CLI がインストール済み・設定済み
+- Docker がインストール済み
+
+### Step 1: ECR リポジトリを作成
+
+```bash
+# リージョンを設定（東日本: ap-northeast-1）
+export AWS_REGION=ap-northeast-1
+
+# ECR リポジトリを作成
+aws ecr create-repository --repository-name ecodao-frontend --region $AWS_REGION
+```
+
+### Step 2: Docker イメージをビルド
+
+```bash
+cd frontend
+
+# コントラクトアドレスを設定（Amoyにデプロイ済みのもの）
+export CONTRACT_ADDRESS=0x1234...your_contract_address
+
+# Docker イメージをビルド
+docker build \
+  --build-arg NEXT_PUBLIC_CONTRACT_ADDRESS=$CONTRACT_ADDRESS \
+  --build-arg NEXT_PUBLIC_DEFAULT_CHAIN_ID=80002 \
+  -t ecodao-frontend .
+```
+
+### Step 3: ECR にプッシュ
+
+```bash
+# AWS アカウント ID を取得
+export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+
+# ECR にログイン
+aws ecr get-login-password --region $AWS_REGION | \
+  docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+
+# タグ付け
+docker tag ecodao-frontend:latest \
+  $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/ecodao-frontend:latest
+
+# プッシュ
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/ecodao-frontend:latest
+```
+
+### Step 4: App Runner サービスを作成
+
+以下の設定ファイル `apprunner.json` を作成します（ポート 3000、TCP ヘルスチェックを設定）：
+
+```json
+{
+  "ServiceName": "ecodao-frontend-v3",
+  "SourceConfiguration": {
+    "ImageRepository": {
+      "ImageIdentifier": "<YOUR_AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-1.amazonaws.com/ecodao-frontend:latest",
+      "ImageConfiguration": {
+        "Port": "3000",
+        "RuntimeEnvironmentVariables": {
+          "HOSTNAME": "0.0.0.0",
+          "PORT": "3000"
+        }
+      },
+      "ImageRepositoryType": "ECR"
+    },
+    "AutoDeploymentsEnabled": true,
+    "AuthenticationConfiguration": {
+      "AccessRoleArn": "arn:aws:iam::<YOUR_AWS_ACCOUNT_ID>:role/service-role/AppRunnerECRAccessRole"
+    }
+  },
+  "HealthCheckConfiguration": {
+    "Protocol": "TCP",
+    "Interval": 10,
+    "Timeout": 5,
+    "HealthyThreshold": 1,
+    "UnhealthyThreshold": 5
+  },
+  "InstanceConfiguration": {
+    "Cpu": "1024",
+    "Memory": "2048"
+  }
+}
+```
+
+> ※ `<YOUR_AWS_ACCOUNT_ID>` はご自身の AWS アカウント ID（例: 007924758667）に置き換えてください。
+> ※ 事前に `AppRunnerECRAccessRole` IAM ロールを作成する必要があります。
+
+CLI でサービスを作成：
+
+```bash
+aws apprunner create-service --cli-input-json file://apprunner.json --region ap-northeast-1
+```
+
+### Step 5: デプロイ確認
+
+App Runner コンソールでサービスのステータスが「Running」になったら、
+表示される URL（`https://xxxxx.ap-northeast-1.awsapprunner.com`）にアクセス！
+
+### 更新時のデプロイ
+
+```bash
+# 再ビルド & プッシュ
+docker build \
+  --build-arg NEXT_PUBLIC_CONTRACT_ADDRESS=$CONTRACT_ADDRESS \
+  --build-arg NEXT_PUBLIC_DEFAULT_CHAIN_ID=80002 \
+  -t ecodao-frontend .
+
+docker tag ecodao-frontend:latest \
+  $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/ecodao-frontend:latest
+
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/ecodao-frontend:latest
+
+# 自動デプロイが有効なら、プッシュ後に自動で更新される
+```
+
+---
+
 ## ⚠️ トラブルシューティング
 
 ### MetaMask で「ネットワークが見つかりません」
