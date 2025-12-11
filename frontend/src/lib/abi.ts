@@ -30,6 +30,7 @@ export const ECODAO_ABI = [
 
   // DAO 分割
   "function splitDAO(uint256 originalTokenId) returns (uint256)",
+  "function submitClaim(address user, uint256 daoId, uint256 amount, bytes32 evidenceHash, uint256 nonce, uint256 expiresAt, bytes signature)",
 
   // ===== Events =====
   "event DAOCreated(uint256 indexed tokenId, address indexed admin, string title, uint256 targetAmount)",
