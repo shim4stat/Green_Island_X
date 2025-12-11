@@ -5,9 +5,10 @@ import {
   createSubDAO as createSubDAOContract,
   contribute as contributeContract,
   splitDAO as splitDAOContract,
+  submitClaim as submitClaimContract,
   kgToGrams,
 } from "@/lib/ethereum";
-import type { TransactionStatus } from "@/types";
+import type { TransactionStatus, ReductionClaim } from "@/types";
 
 /**
  * コントラクトへの書き込み操作を管理するフック
@@ -104,6 +105,33 @@ export function useContractWrite() {
     [reset]
   );
 
+  // 証拠付き貢献記録（Attestation ベース）
+  const submitClaim = useCallback(
+    async (claim: ReductionClaim, signature: string) => {
+      reset();
+      setStatus("pending");
+
+      try {
+        // Debug log for submitClaim payload
+        console.log("[useContractWrite] submitClaim payload:", {
+          claim,
+          signature,
+        });
+        const receipt = await submitClaimContract(claim, signature);
+        setTxHash(receipt.hash);
+        setStatus("success");
+        return receipt;
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "トランザクションに失敗しました";
+        setError(message);
+        setStatus("error");
+        throw err;
+      }
+    },
+    [reset]
+  );
+
   return {
     status,
     error,
@@ -112,6 +140,7 @@ export function useContractWrite() {
     createSubDAO,
     contribute,
     splitDAO,
+     submitClaim,
     isPending: status === "pending",
     isSuccess: status === "success",
     isError: status === "error",

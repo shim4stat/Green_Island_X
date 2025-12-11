@@ -4,3 +4,4 @@ export { DAOCard } from "./DAOCard";
 export { ContributionForm } from "./ContributionForm";
 export { ConfettiTrigger } from "./ConfettiTrigger";
 export { LoadingSpinner, EmptyState } from "./common";
+export { EvidenceContribution } from "./EvidenceContribution";

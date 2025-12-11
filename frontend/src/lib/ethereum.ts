@@ -6,7 +6,7 @@ import {
   CHAIN_INFO,
   DEFAULT_CHAIN_ID,
 } from "./abi";
-import type { SubDAO } from "@/types";
+import type { SubDAO, ReductionClaim } from "@/types";
 
 /**
  * ブラウザプロバイダーを取得
@@ -293,6 +293,26 @@ export async function splitDAO(
 ): Promise<ethers.TransactionReceipt> {
   const contract = await getWritableContract();
   const tx = await contract.splitDAO(originalTokenId);
+  return await tx.wait();
+}
+
+/**
+ * Submit attested reduction claim to the contract.
+ */
+export async function submitClaim(
+  claim: ReductionClaim,
+  signature: string
+): Promise<ethers.TransactionReceipt> {
+  const contract = await getWritableContract();
+  const tx = await contract.submitClaim(
+    claim.user,
+    claim.daoId,
+    claim.amount,
+    claim.evidenceHash,
+    claim.nonce,
+    claim.expiresAt,
+    signature
+  );
   return await tx.wait();
 }
 

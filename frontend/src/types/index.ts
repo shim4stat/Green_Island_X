@@ -92,3 +92,28 @@ export interface DAOSplitEvent {
   newTokenId: number;
   newAdmin: string;
 }
+
+/**
+ * Attested reduction claim used for attestation-based contributions.
+ */
+export interface ReductionClaim {
+  user: string;
+  daoId: number;
+  amount: number; // grams
+  evidenceHash: string;
+  nonce: number;
+  expiresAt: number;
+}
+
+/**
+ * Response from evidence verification API.
+ */
+export interface EvidenceVerificationResult {
+  evidenceId: string;
+  status: "approved" | "pending" | "rejected";
+  amountGrams: number;
+  amountKg: number;
+  reason: string;
+  claim: ReductionClaim;
+  signature: string;
+}
