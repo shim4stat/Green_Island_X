@@ -11,7 +11,7 @@ type FilterType = "all" | "active" | "completed";
 export default function HomePage() {
   const { daos, isLoading, error, refetch } = useDAOList();
   const { isConnected } = useWeb3();
-  const [filter, setFilter] = useState<FilterType>("all");
+  const [filter, setFilter] = useState<FilterType>("active");
 
   // フィルタリング
   const filteredDAOs = daos.filter((dao) => {
